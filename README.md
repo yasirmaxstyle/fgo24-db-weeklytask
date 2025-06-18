@@ -57,7 +57,7 @@ direction TB
     payment {
         string payment_id PK
         string name
-        int amount
+        decimal amount
         boolean is_paid
         boolean is_due
         timestamp due_time
