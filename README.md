@@ -5,7 +5,7 @@ title: ERD Movie Ticketing
 ---
 erDiagram
 direction TB
-    user ||--o{session : has
+    user ||--o|session : has
     user }o--||registration_request : make
     user }|--o|transaction : proceed
     transaction ||--||movie : load
@@ -14,10 +14,11 @@ direction TB
     history ||--o|transaction : record
     movie ||--o{genres : has
     director||--||movie : direct
-    cast }o--||movie : play
+    cast }o--o|movie_cast : acts_in
+    movie_cast|o--o{movie : appears_in
 
     user{
-        string user_id PK
+        int user_id PK
         string email
         string password
         string username
@@ -26,18 +27,18 @@ direction TB
     }
 
     session{
-        string session_id PK
+        int session_id PK
         timestamp created_at
         string user_id FK
     }
 
     registration_request{
-        string registration_id PK
+        int registration_id PK
         string user_id FK
     }
 
     transaction{
-        string transaction_id PK
+        int transaction_id PK
         timestamp created_at
         string created_by FK
         string movie_id FK
@@ -46,7 +47,7 @@ direction TB
     }
 
     cinema{
-        string cinema_id PK
+        int cinema_id PK
         string name
         time time
         date date
@@ -55,7 +56,7 @@ direction TB
     }
 
     payment {
-        string payment_id PK
+        int payment_id PK
         string name
         decimal amount
         boolean is_paid
@@ -64,12 +65,12 @@ direction TB
     }
 
     history{
-        string history_id PK
+        int history_id PK
         string transaction_id FK
     }
 
     movie{
-        string movie_id PK
+        int movie_id PK
         string poster_path
         string backdrop_path
         string title
@@ -79,19 +80,27 @@ direction TB
         string genre_id FK
     }
 
-    genres {
-        string genre_id PK
-        string name
+    movie_cast{
+        int movie_cast_id Pk
+        int movie_id FK
+        int cast_id FK
+        string role
     }
 
     cast {
-        string cast_id PK
+        int cast_id PK
         string first_name
         string last_name
     }
 
+    genres {
+        int genre_id PK
+        string name
+    }
+
+
     director {
-        string director_id PK
+        int director_id PK
         string first_name
         string last_name
     }
