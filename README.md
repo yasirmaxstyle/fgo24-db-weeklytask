@@ -5,23 +5,24 @@ title: ERD Movie Ticketing
 ---
 erDiagram
 direction TB
-    user ||--o|session : has
+    user }|--o|session : has
     user }o--||registration_request : make
-    user }|--o|transaction : proceed
-    transaction ||--||movie : load
-    transaction ||--||cinema : load
-    transaction ||--||payment : paid_by
+    user ||--o{transaction : proceed
+    showtime ||--||movies : load
+    transaction ||--||showtime : load
+    transaction ||--|{payment_method : has
     history ||--o|transaction : record
-    movie ||--o{genres : has
-    director||--||movie : direct
-    cast }o--o|movie_cast : acts_in
-    movie_cast|o--o{movie : appears_in
+    movies ||--o{movies_genres : has
+    director||--|{movies : direct
+    actors }o--o|movie_cast : acts_in
+    movie_cast|o--o{movies : appears_in
 
     user{
         int user_id PK
         string email
         string password
-        string username
+        string first_name
+        string last_name
         string session_id FK
         string registration_id FK
     }
@@ -29,33 +30,38 @@ direction TB
     session{
         int session_id PK
         timestamp created_at
-        string user_id FK
+        int user_id FK
     }
 
     registration_request{
         int registration_id PK
-        string user_id FK
+        int user_id FK
     }
 
     transaction{
         int transaction_id PK
+        string email
+        string full_name
+        string pgone_number
         timestamp created_at
+        string total_seats
+        decimal amout
         string created_by FK
-        string movie_id FK
         string cinema_id FK
         string payment_id FK
     }
 
-    cinema{
-        int cinema_id PK
-        string name
-        time time
-        date date
-        string seat
+    showtime{
+        int showtime_id PK
+        string cinema_name
         string location
+        datetime time
+        date date
+        string seat_number
+        int movie_id FK
     }
 
-    payment {
+    payment_method{
         int payment_id PK
         string name
         decimal amount
@@ -69,7 +75,7 @@ direction TB
         string transaction_id FK
     }
 
-    movie{
+    movies{
         int movie_id PK
         string poster_path
         string backdrop_path
@@ -81,25 +87,25 @@ direction TB
     }
 
     movie_cast{
-        int movie_cast_id Pk
+        int movie_cast_id PK
         int movie_id FK
         int cast_id FK
         string role
     }
 
-    cast {
+    actors{
         int cast_id PK
         string first_name
         string last_name
     }
 
-    genres {
-        int genre_id PK
-        string name
+    movies_genres{
+        int movie_genres_id PK
+        int movie_id FK
+        int genre_id FK
     }
 
-
-    director {
+    director{
         int director_id PK
         string first_name
         string last_name
