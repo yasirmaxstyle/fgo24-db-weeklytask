@@ -5,17 +5,19 @@ title: ERD Movie Ticketing
 ---
 erDiagram
 direction TB
-    user }|--o|session : has
     user }o--||registration_request : make
-    user ||--o{transaction : proceed
-    showtime ||--||movies : load
-    transaction ||--||showtime : load
-    transaction ||--|{payment_method : has
-    history ||--o|transaction : record
+    user }|--o|session : has
+    user ||--o{transactions : proceed
+
+    showtimes ||--|{movies : load
+    transactions }|--||showtimes : load
+    transactions ||--|{payment_method : has
+    history ||--o|transactions : record
+
     movies ||--o{movies_genres : has
-    director||--|{movies : direct
-    actors }o--o|movie_cast : acts_in
-    movie_cast|o--o{movies : appears_in
+    directors||--|{movies : direct
+    actors }o--o|movies_cast : acts_in
+    movies_cast|o--o{movies : appears_in
 
     user{
         int user_id PK
@@ -23,8 +25,14 @@ direction TB
         string password
         string first_name
         string last_name
+        string phone_number
         string session_id FK
         string registration_id FK
+    }
+
+    registration_request{
+        int registration_id PK
+        int user_id FK
     }
 
     session{
@@ -33,25 +41,23 @@ direction TB
         int user_id FK
     }
 
-    registration_request{
-        int registration_id PK
-        int user_id FK
-    }
-
-    transaction{
-        int transaction_id PK
+    transactions{
+        int transactions_id PK
         string email
         string full_name
-        string pgone_number
-        timestamp created_at
+        string phone_number
         string total_seats
         decimal amout
+        boolean is_paid
+        timestamp created_at
+        timestamp due_time
+        boolean is_due
         string created_by FK
         string cinema_id FK
         string payment_id FK
     }
 
-    showtime{
+    showtimes{
         int showtime_id PK
         string cinema_name
         string location
@@ -64,10 +70,6 @@ direction TB
     payment_method{
         int payment_id PK
         string name
-        decimal amount
-        boolean is_paid
-        boolean is_due
-        timestamp due_time
     }
 
     history{
@@ -86,8 +88,8 @@ direction TB
         string genre_id FK
     }
 
-    movie_cast{
-        int movie_cast_id PK
+    movies_cast{
+        int movies_cast_id PK
         int movie_id FK
         int cast_id FK
         string role
@@ -100,13 +102,13 @@ direction TB
     }
 
     movies_genres{
-        int movie_genres_id PK
+        int movies_genres_id PK
         int movie_id FK
         int genre_id FK
     }
 
-    director{
-        int director_id PK
+    directors{
+        int directors_id PK
         string first_name
         string last_name
     }
