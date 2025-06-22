@@ -84,7 +84,6 @@ direction TB
         string overview
         int duration
         date release_date
-        string genre_id FK
     }
 
     movies_cast{
