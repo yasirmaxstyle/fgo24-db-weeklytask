@@ -7,17 +7,17 @@ erDiagram
 direction TB
     user }o--o|registration_request : make
     user ||--o|session : has
-    user ||--o{transactions : proceed
+    user ||--o{transactions : creates
 
-    transactions_details }o--||movies : load
+    transactions_details }o--||movies : contains
     transactions |o--|{transactions_details : has
-    transactions }|--||payment_method : has
+    transactions }|--||payment_method : uses
     history ||--o|transactions : record
 
     movies ||--o{movies_genres : has
-    directors||--|{movies : direct
-    actors }o--o|movies_cast : acts_in
-    movies_cast|o--o{movies : appears_in
+    directors||--o{movies : directs
+    actors ||--o{movies_cast : acts_in
+    movies_cast|o--|{movies : appears_in
 
     user{
         int user_id PK
