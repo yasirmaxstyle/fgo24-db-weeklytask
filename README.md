@@ -17,7 +17,7 @@ direction TB
     movies ||--o{movies_genres : has
     directors||--o{movies : directs
     actors ||--o{movies_cast : acts_in
-    movies_cast|o--|{movies : appears_in
+    movies_cast}o--||movies : appears_in
 
     user{
         int user_id PK
@@ -84,6 +84,7 @@ direction TB
         string overview
         int duration
         date release_date
+        int directors_id FK
     }
 
     movies_cast{
