@@ -14,7 +14,14 @@ CREATE TABLE registration_request (
 
 CREATE TABLE session (
     id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP,
     user_id INT REFERENCES users (id)
+);
+
+CREATE TABLE directors (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100)
 );
 
 CREATE TABLE movies (
@@ -22,9 +29,10 @@ CREATE TABLE movies (
     poster_path VARCHAR(255),
     backdrop_path VARCHAR(255),
     title VARCHAR(100),
-    synopsis TEXT,
+    overview TEXT,
     duration INT,
     release_date DATE,
+    directors_id INT REFERENCES directors (id)
 );
 
 CREATE TABLE movies_genres (
@@ -42,23 +50,7 @@ CREATE TABLE actors (
 CREATE TABLE movies_cast (
     id SERIAL PRIMARY KEY,
     movie_id INT REFERENCES movies (id),
-    actors_id INT REFERENCES actors (id)
-);
-
-CREATE TABLE director (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100)
-);
-
-CREATE TABLE showtimes (
-    id SERIAL PRIMARY KEY,
-    cinema_name VARCHAR(50),
-    time TIME,
-    date DATE,
-    location VARCHAR(50),
-    seat_number VARCHAR(10),
-    movie_id INT REFERENCES movies (id)
+    actor_id INT REFERENCES actors (id)
 );
 
 CREATE TABLE payment_method (
@@ -77,6 +69,16 @@ CREATE TABLE transactions (
     created_at TIMESTAMP now(),
     due_time TIMESTAMP,
     created_by INT REFERENCES users (id),
-    showtimes_id INT REFERENCES showtimes (id),
     payment_id INT REFERENCES payment_method (id)
+);
+
+CREATE TABLE transactions_details (
+    id SERIAL PRIMARY KEY,
+    cinema_name VARCHAR(50),
+    time TIME,
+    date DATE,
+    location VARCHAR(50),
+    seat_number VARCHAR(10),
+    transaction_id INT REFERENCES transactions (id),
+    movie_id INT REFERENCES movies (id)
 );
