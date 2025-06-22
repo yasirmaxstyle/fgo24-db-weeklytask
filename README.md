@@ -9,8 +9,8 @@ direction TB
     user ||--o|session : has
     user ||--o{transactions : proceed
 
-    showtimes ||--|{movies : load
-    transactions |o--|{showtimes : load
+    transactions_details }o--||movies : load
+    transactions |o--|{transactions_details : has
     transactions }|--||payment_method : has
     history ||--o|transactions : record
 
@@ -55,14 +55,14 @@ direction TB
         string payment_id FK
     }
 
-    showtimes{
-        int showtime_id PK
+    transactions_details{
+        int details_id PK
         string cinema_name
         string location
         datetime time
         date date
         string seat_number
-        int transactions_id
+        int transactions_id FK
         int movie_id FK
     }
 
