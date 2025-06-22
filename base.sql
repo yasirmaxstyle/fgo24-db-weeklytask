@@ -55,7 +55,7 @@ CREATE TABLE movies_cast (
 
 CREATE TABLE payment_method (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(50),
+    name VARCHAR(50)
 );
 
 CREATE TABLE transactions (
@@ -66,8 +66,8 @@ CREATE TABLE transactions (
     total_seats INT,
     amount DECIMAL(10, 2),
     is_paid BOOLEAN,
-    created_at TIMESTAMP now(),
-    due_time TIMESTAMP,
+    created_at TIMESTAMP DEFAULT now(),
+    due_time TIMESTAMP DEFAULT (now() + INTERVAL '30 minutes'),
     created_by INT REFERENCES users (id),
     payment_id INT REFERENCES payment_method (id)
 );
