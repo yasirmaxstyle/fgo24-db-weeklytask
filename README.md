@@ -5,13 +5,13 @@ title: ERD Movie Ticketing
 ---
 erDiagram
 direction TB
-    user }o--||registration_request : make
-    user }|--o|session : has
+    user }o--o|registration_request : make
+    user ||--o|session : has
     user ||--o{transactions : proceed
 
     showtimes ||--|{movies : load
-    transactions }|--||showtimes : load
-    transactions ||--|{payment_method : has
+    transactions |o--|{showtimes : load
+    transactions }|--||payment_method : has
     history ||--o|transactions : record
 
     movies ||--o{movies_genres : has
@@ -26,7 +26,6 @@ direction TB
         string first_name
         string last_name
         string phone_number
-        string session_id FK
         string registration_id FK
     }
 
@@ -46,14 +45,13 @@ direction TB
         string email
         string full_name
         string phone_number
-        string total_seats
+        int total_seats
         decimal amout
         boolean is_paid
         timestamp created_at
         timestamp due_time
         boolean is_due
         string created_by FK
-        string cinema_id FK
         string payment_id FK
     }
 
@@ -64,6 +62,7 @@ direction TB
         datetime time
         date date
         string seat_number
+        int transactions_id
         int movie_id FK
     }
 
@@ -104,7 +103,7 @@ direction TB
     movies_genres{
         int movies_genres_id PK
         int movie_id FK
-        int genre_id FK
+        string genre
     }
 
     directors{
