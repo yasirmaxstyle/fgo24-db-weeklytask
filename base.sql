@@ -38,7 +38,7 @@ CREATE TABLE movies (
 CREATE TABLE movies_genres (
     id SERIAL PRIMARY KEY,
     movie_id INT REFERENCES movies (id),
-    string genre
+    genre VARCHAR(50)
 );
 
 CREATE TABLE actors (
